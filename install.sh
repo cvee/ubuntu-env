@@ -71,7 +71,7 @@ if [ $? -eq 1 ]
 fi
 
 # Install node.js
-node_version=$(node --version)
+node_version=$(node --version 2>/dev/null)
 if [ "$node_version" != "v0.6.1" ]
   then
     echo 'Installing node.js.'
