@@ -72,7 +72,7 @@ fi
 
 # Install node.js
 node_version=$(node --version)
-if [ $node_version != "v0.6.1" ]
+if [ "$node_version" != "v0.6.1" ]
   then
     echo 'Installing node.js.'
     cd /tmp
