@@ -1,0 +1,115 @@
+# You can copy this file to
+# /etc/my.cnf to set global options,
+# mysql-data-dir/my.cnf to set server-specific options (in this
+# installation this directory is /var/db/mysql5) or
+# ~/.my.cnf to set user-specific options.
+#
+# In this file, you can use all long options that a program supports.
+# If you want to know which options a program supports, run the program
+# with the "--help" option.
+
+#============================================================================#
+# MySQL Server
+#
+# http://dev.mysql.com/doc/refman/5.0/en/mysqld-server.html
+#============================================================================#
+
+##
+# MySQL Server
+# http://dev.mysql.com/doc/refman/5.0/en/server-system-variables.html
+#
+[mysqld]
+
+# Do not accept remote TCP/IP connections
+# Listen for TCP/IP connections only on the local loopback interface.
+bind-address = 127.0.0.1
+
+# Do not accept remote or local TCP/IP connections
+# Connections must be made via Unix sockets or named pipes
+#skip-networking
+
+# Use UTF-8 as the default server character set
+character-set-server = utf8
+
+# Use utf8_general_ci as the default server collation
+collation-server = utf8_general_ci
+
+# The path name of the process ID file
+pid-file = /opt/local/var/run/mysql5/mysqld.pid
+
+# The port number to use when listening for TCP/IP connections
+port = 3306
+
+# The Unix socket file to use when listening for local connections
+socket = /opt/local/var/run/mysql5/mysqld.sock
+
+# Disable the FEDERATED storage engine by default
+# http://dev.mysql.com/doc/refman/5.0/en/federated-storage-engine.html
+skip-external-locking
+
+# Log connections and SQL statements received from clients to this file
+#log = /opt/local/var/log/mysql5/general-query.log
+
+# Log errors and startup messages to this file
+log-error = /opt/local/var/log/mysql5/error.log
+
+# Log all queries that have taken more than long_query_time seconds to execute 
+# to this file
+# As of MySQL 5.1.29 log-slow-queries is deprecated
+# log-slow-queries = /opt/local/var/log/mysql5/slow-queries.log
+slow_query_log = 1
+slow-query-log-file = /opt/local/var/log/mysql5/slow-queries.log
+
+# If a query takes longer than this many seconds, and log-slow-queries is 
+# enabled, the query is logged.
+long_query_time = 10
+
+
+# Memory settings for a large system with memory of 1G-2G where the system 
+# runs mainly MySQL.
+max_allowed_packet = 1M
+myisam_sort_buffer_size = 64M
+key_buffer = 384M
+query_cache_size = 32M
+read_buffer_size = 2M
+read_rnd_buffer_size = 8M
+sort_buffer_size = 2M
+table_cache = 512
+thread_cache_size = 8
+# Try number of CPU's*2 for thread_concurrency
+thread_concurrency = 8
+
+#=============================================================================
+# InnoDB System Variables
+#=============================================================================
+
+# Uncomment the following if you are using InnoDB tables
+innodb_data_home_dir = /opt/local/var/db/mysql5/
+innodb_data_file_path = ibdata1:2000M;ibdata2:10M:autoextend
+innodb_log_group_home_dir = /opt/local/var/log/mysql5/
+
+# You can set .._buffer_pool_size up to 50 - 80 %
+# of RAM but beware of setting memory usage too high
+innodb_buffer_pool_size = 384M
+innodb_additional_mem_pool_size = 20M
+# Set .._log_file_size to 25 % of buffer pool size
+innodb_log_file_size = 100M
+innodb_log_buffer_size = 8M
+innodb_flush_log_at_trx_commit = 1
+innodb_lock_wait_timeout = 50
+
+
+[isamchk]
+
+key_buffer = 256M
+sort_buffer_size = 256M
+read_buffer = 2M
+write_buffer = 2M
+
+
+[myisamchk]
+
+key_buffer = 256M
+sort_buffer_size = 256M
+read_buffer = 2M
+write_buffer = 2M

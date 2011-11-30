@@ -1,0 +1,23 @@
+#=============================================================================
+# Replication Master Configuration
+#
+# http://dev.mysql.com/doc/refman/5.0/en/replication-options.html
+#=============================================================================
+
+[mysqld]
+
+# Unique identifier in the range from 1 to 2^32 – 1
+server-id = 1
+
+# Use compression of the slave/master protocol if both the slave and the 
+# master support it
+slave_compressed_protocol = 1
+
+# Enable binary logging
+log-bin = /opt/local/var/log/mysql5/mysql-bin
+
+# Index file for binary log file names
+log-bin-index = /opt/local/var/log/mysql5/mysql-bin.index
+
+# Synchronize the binary log to disk after every write
+sync_binlog = 1

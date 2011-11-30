@@ -1,0 +1,87 @@
+#=============================================================================
+# Replication Slave Configuration
+#
+# http://dev.mysql.com/doc/refman/5.0/en/replication-options.html
+#=============================================================================
+
+[mysqld]
+
+# Unique identifier in the range from 1 to 2^32 – 1
+server-id = 2
+
+# Use compression of the slave/master protocol if both the slave and the 
+# master support it
+slave_compressed_protocol = 1
+
+# Enable binary logging
+log-bin = /opt/local/var/log/mysql5/mysql-bin
+
+# Index file for binary log file names
+log-bin-index = /opt/local/var/log/mysql5/mysql-bin.index
+
+# Synchronize the binary log to disk after every write
+sync_binlog = 1
+
+# Tell the slave to log the updates performed by its SQL thread to its own
+# binary log
+log-slave-updates = 1
+
+# Cause the slave to allow no updates except from slave threads or from users
+# having the SUPER privilege
+read-only
+
+# Basename for the relay log
+relay-log = /opt/local/var/log/mysql5/mysql-relay-bin
+
+# Name to use for the relay log index file
+relay-log-index = /opt/local/var/log/mysql5/mysql-relay-bin.index
+
+# Name to use for the file in which the slave records information about the
+# relay logs
+relay-log-info-file = /opt/local/var/log/mysql5/relay-log.info
+
+# Host name or IP address of the slave to be reported to the master during
+# slave registration
+report-host = <hostname>
+
+# To configure this host as a replication slave, you can choose between
+# two methods:
+#
+# 1) Use the CHANGE MASTER TO command (fully described in our manual)
+#    the syntax is:
+#
+#    CHANGE MASTER TO MASTER_HOST=<host>, MASTER_PORT=<port>,
+#    MASTER_USER=<user>, MASTER_PASSWORD=<password> ;
+#
+#    where you replace <host>, <user>, <password> by quoted strings and
+#    <port> by the master's port number (3306 by default).
+#
+#    Example:
+#
+#    CHANGE MASTER TO MASTER_HOST='125.564.12.1', MASTER_PORT=3306,
+#    MASTER_USER='joe', MASTER_PASSWORD='secret';
+#
+# 2) Set the variables below. However, in case you choose this method, then
+#    start replication for the first time (even unsuccessfully, for example
+#    if you mistyped the password in master-password and the slave fails to
+#    connect), the slave will create a master.info file, and any later
+#    change in this file to the variables' values below will be ignored and
+#    overridden by the content of the master.info file, unless you shutdown
+#    the slave server, delete master.info and restart the slaver server.
+#    For that reason, you may want to leave the lines below untouched
+#    (commented) and instead use CHANGE MASTER TO (see above)
+#
+# Host name or IP address of the master replication server (Required)
+master-host = 127.0.0.1
+#
+# User name of the account that the slave thread uses for authentication when
+# it connects to the master (Required)
+master-user = replicant
+#
+# Password of the account the slave uses for authentication when it connects
+# to the master (Required)
+master-password = <password>
+#
+# TCP/IP port number that the master is listening on (Optional)
+# Default: 3306
+master-port = 3306
