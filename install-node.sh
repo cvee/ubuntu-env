@@ -64,3 +64,11 @@ fi
 # make install so the following section is no longer necessary.
 #echo "Installing npm."
 #curl http://npmjs.org/install.sh | sudo sh
+
+# Create a Dedicated User Account
+# To avoid the security concerns caused by running applications as root,
+# create a user responsible for running node apps.
+sudo adduser --home /home/node --shell /bin/bash --disabled-password node
+sudo mkdir /home/node/.ssh
+sudo chown node:node /home/node/.ssh
+sudo chmod 700 /home/node/.ssh
