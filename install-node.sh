@@ -46,17 +46,15 @@ fi
 
 # Install node.js
 node_version=$(node --version 2>/dev/null)
-if [ "$node_version" != "v0.6.5" ]
+if [ "$node_version" != "v0.6.7" ]
   then
     echo 'Installing node.js.'
-    cd /tmp
-    curl -O http://nodejs.org/dist/v0.6.5/node-v0.6.5.tar.gz
-    tar -xzf node-v0.6.5.tar.gz
-    cd node-v0.6.5
+    curl -L http://nodejs.org/dist/v0.6.7/node-v0.6.7.tar.gz | tar -C /tmp -xzf -
+    cd /tmp/node-v0.6.7
     ./configure
-    make -j2
-    sudo make install
-    rm -rf node-v0.6.5
+    make -j2 && sudo make install
+    cd ~/
+    rm -rf /tmp/node-v0.6.7
 fi
 
 # Install npm
