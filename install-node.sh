@@ -1,5 +1,7 @@
 #!/bin/sh
 
+node_version_lastest=v0.6.17
+
 # Update apt-get
 echo "Updating package list."
 sudo apt-get update 2>/dev/null 1>/dev/null
@@ -46,15 +48,15 @@ fi
 
 # Install node.js
 node_version=$(node --version 2>/dev/null)
-if [ "$node_version" != "v0.6.15" ]
+if [ "$node_version" != "$node_version_latest" ]
   then
-    echo 'Installing node.js.'
-    curl -L http://nodejs.org/dist/v0.6.15/node-v0.6.15.tar.gz | tar -C /tmp -xzf -
-    cd /tmp/node-v0.6.15
+    echo "Installing node.js."
+    curl -L http://nodejs.org/dist/node-$(node_version_latest)/node-$(node_version_latest).tar.gz | tar -C /tmp -xzf -
+    cd /tmp/node-$(node_version_latest)
     ./configure
     make -j2 && sudo make install
     cd ~/
-    rm -rf /tmp/node-v0.6.15
+    rm -rf /tmp/node-$(node_version_latest)
 fi
 
 # Install npm
@@ -63,8 +65,11 @@ fi
 #echo "Installing npm."
 #curl http://npmjs.org/install.sh | sudo sh
 
-# Create a Dedicated User Account
-# To avoid the security concerns caused by running applications as root,
-# create a user responsible for running node apps.
-sudo useradd --create-home --user-group --shell /bin/bash node
-sudo su -c "ssh-keygen -b 4096 -t rsa -N '' -f ~/.ssh/id_rsa" -l node
+if [ -z "$(getent passwd node)" ]
+  then
+    # Create a Dedicated User Account
+    # To avoid the security concerns caused by running applications as root,
+    # create a user responsible for running node apps.
+    sudo useradd --create-home --user-group --shell /bin/bash node
+    sudo su -c "ssh-keygen -b 4096 -t rsa -N '' -f ~/.ssh/id_rsa" -l node
+fi
